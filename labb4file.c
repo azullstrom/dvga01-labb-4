@@ -108,62 +108,14 @@ void rmVehicle(vehicle vehicle_info[]) {
 
 void sortVehicleBrand(vehicle vehicle_info[]) {
     int x, y;
-    char temp[ARRAY_50];
+    vehicle temp_vehicle_info[ARRAY_10] = {0};
     int int_temp;
     for (x = 0; x < ARRAY_10; x++) {
         for (y = x + 1; y < ARRAY_10; y++) {
             if (strcmp(vehicle_info[x].vehicle_brand, vehicle_info[y].vehicle_brand) > 0 && vehicle_info[y].car_found != 0) {
-                strcpy(temp, vehicle_info[x].vehicle_brand); 
-                strcpy(vehicle_info[x].vehicle_brand, vehicle_info[y].vehicle_brand); 
-                strcpy(vehicle_info[y].vehicle_brand, temp); 
- 
-                strcpy(temp, vehicle_info[x].vehicle_type); 
-                strcpy(vehicle_info[x].vehicle_type, vehicle_info[y].vehicle_type); 
-                strcpy(vehicle_info[y].vehicle_type, temp); 
-
-                strcpy(temp, vehicle_info[x].number_plate); 
-                strcpy(vehicle_info[x].number_plate, vehicle_info[y].number_plate); 
-                strcpy(vehicle_info[y].number_plate, temp); 
-
-                strcpy(temp, vehicle_info[x].person.age); 
-                strcpy(vehicle_info[x].person.age, vehicle_info[y].person.age); 
-                strcpy(vehicle_info[y].person.age, temp); 
-
-                strcpy(temp, vehicle_info[x].person2.age); 
-                strcpy(vehicle_info[x].person2.age, vehicle_info[y].person2.age); 
-                strcpy(vehicle_info[y].person2.age, temp); 
-
-                strcpy(temp, vehicle_info[x].person3.age); 
-                strcpy(vehicle_info[x].person3.age, vehicle_info[y].person3.age); 
-                strcpy(vehicle_info[y].person3.age, temp); 
-
-                strcpy(temp, vehicle_info[x].person.name); 
-                strcpy(vehicle_info[x].person.name, vehicle_info[y].person.name); 
-                strcpy(vehicle_info[y].person.name, temp); 
-
-                strcpy(temp, vehicle_info[x].person2.name); 
-                strcpy(vehicle_info[x].person2.name, vehicle_info[y].person2.name); 
-                strcpy(vehicle_info[y].person2.name, temp); 
-
-                strcpy(temp, vehicle_info[x].person3.name); 
-                strcpy(vehicle_info[x].person3.name, vehicle_info[y].person3.name); 
-                strcpy(vehicle_info[y].person3.name, temp); 
-
-                strcpy(temp, vehicle_info[x].person.last_name); 
-                strcpy(vehicle_info[x].person.last_name, vehicle_info[y].person.last_name); 
-                strcpy(vehicle_info[y].person.last_name, temp); 
-
-                strcpy(temp, vehicle_info[x].person2.last_name); 
-                strcpy(vehicle_info[x].person2.last_name, vehicle_info[y].person2.last_name); 
-                strcpy(vehicle_info[y].person2.last_name, temp); 
-                
-                strcpy(temp, vehicle_info[x].person3.last_name); 
-                strcpy(vehicle_info[x].person3.last_name, vehicle_info[y].person3.last_name); 
-                strcpy(vehicle_info[y].person3.last_name, temp); 
-
-                int_temp = vehicle_info[x].car_found; 
-                vehicle_info[x].car_found = vehicle_info[y].car_found; 
-                vehicle_info[y].car_found = int_temp;
+                temp_vehicle_info[x] = vehicle_info[x];
+                vehicle_info[x] = vehicle_info[y];
+                vehicle_info[y] = temp_vehicle_info[x];
             }
         }
     }
