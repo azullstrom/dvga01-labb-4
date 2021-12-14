@@ -47,7 +47,7 @@ int main() {
         printf("\033[0m\n");
         printf("Ange ditt alternativ: ");
         scanf(" %c", &choice);
-
+    
         switch (choice) {
             case '1': 
                 addVehicle(vehicle_info);
