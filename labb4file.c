@@ -116,7 +116,7 @@ void sortVehicleBrand(vehicle vehicle_info[]) {
                 strcpy(temp, vehicle_info[x].vehicle_brand); 
                 strcpy(vehicle_info[x].vehicle_brand, vehicle_info[y].vehicle_brand); 
                 strcpy(vehicle_info[y].vehicle_brand, temp); 
-
+ 
                 strcpy(temp, vehicle_info[x].vehicle_type); 
                 strcpy(vehicle_info[x].vehicle_type, vehicle_info[y].vehicle_type); 
                 strcpy(vehicle_info[y].vehicle_type, temp); 
