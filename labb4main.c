@@ -18,9 +18,14 @@ int main() {
 
     //Läser in sparad data från .bin-fil
     FILE *fp;
-    fp = fopen("fordonsregister.bin", "rb");
-    for (x = 0; x < ARRAY_10; x++) {
-        fread(&vehicle_info[x], sizeof(vehicle_info[x]), 1, fp);
+    if ((fp = fopen("fordonsregister.bin", "rb")) == NULL) {
+        printf("Filen ''fordonsregister.bin'' kunde inte öppnas. Programmet stängs...\n");
+        exit(0);
+    }
+    else {
+        for (x = 0; x < ARRAY_10; x++) {
+            fread(&vehicle_info[x], sizeof(vehicle_info[x]), 1, fp);
+        }
     }
     fclose(fp);
 
