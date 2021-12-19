@@ -338,7 +338,7 @@ int getFirstFreeIndex(vehicle vehicle_info[]) {
             y++;
         }
         else {
-            if (y != 10) {
+            if (y != ARRAY_10) {
                 printf("Plats %d ledig\n", y + 1);
                 break;
             }
