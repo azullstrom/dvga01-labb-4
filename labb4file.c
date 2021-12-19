@@ -3,7 +3,7 @@
 //Funktionsdefitioner
 void addVehicle(vehicle vehicle_info[]) {
     char svar;
-    int ctrl = 1, ctrl2 = 1, next_owner = OWNER_TWO, age_ctrl;
+    int ctrl = 1, ctrl2 = 1, next_owner = OWNER_TWO;
     int y = getFirstFreeIndex(vehicle_info);
     if (y == ARRAY_10) {
         printf("Fordonsregistret fullt!\n");
