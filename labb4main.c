@@ -1,18 +1,19 @@
 #include "labb4file.h"
 
 //Externa funktioner
-extern void addVehicle();
-extern void rmVehicle();
-extern void sortVehicleBrand();
-extern void checkVehicle();
-extern void printVehicleRegister();
-extern void exitProgram();
-extern void getAllOfOneOwnersVehicles();
-extern void getOwnerOfCertainVehicle();
+extern void addVehicle(vehicle vehicle_info[]);
+extern void rmVehicle(vehicle vehicle_info[]);
+extern void sortVehicleBrand(vehicle vehicle_info[]);
+extern void checkVehicle(vehicle vehicle_info[]);
+extern void printVehicleRegister(vehicle vehicle_info[]);
+extern void exitProgram(vehicle vehicle_info[]);
+extern void getAllOfOneOwnersVehicles(vehicle vehicle_info[]);
+extern void getOwnerOfCertainVehicle(vehicle vehicle_info[]);
+extern int safeInputInt();
 
 //Start av programmet
 int main() { 
-    char choice; 
+    long choice; 
     int x;
     vehicle vehicle_info[ARRAY_10] = {0};
 
@@ -42,46 +43,48 @@ int main() {
         printf("|\033[032m 7. Sök efter ett specifikt fordons ägare\033[035m\t\t|\n");
         printf("|\033[032m 8. Sök efter någon av ett fordons egenskaper\033[035m\t\t|\n");
         printf("|\033[032m 9. Sök efter kombinationer om ett fordons egenskaper\033[035m\t|\n");
-        printf("|\033[032m 0. Avsluta\033[035m\t\t\t\t\t\t|\n");
+        printf("|\033[032m 10. Avsluta\033[035m\t\t\t\t\t\t|\n");
         printf("---------------------------------------------------------\n");
         printf("\033[0m\n");
         printf("Ange ditt alternativ: ");
-        scanf(" %c", &choice);
+        choice = safeInputInt();
     
         switch (choice) {
-            case '1': 
+            case 1: 
                 addVehicle(vehicle_info);
                 break;
-            case '2':
+            case 2:
                 rmVehicle(vehicle_info);
                 break;
-            case '3':
+            case 3:
                 sortVehicleBrand(vehicle_info);
                 break;
-            case '4':
+            case 4:
                 checkVehicle(vehicle_info);
                 break;
-            case '5':
+            case 5:
                 printVehicleRegister(vehicle_info);
                 break;
-            case '6':
+            case 6:
                 getAllOfOneOwnersVehicles(vehicle_info);
                 break;
-            case '7':
+            case 7:
                 getOwnerOfCertainVehicle(vehicle_info);
                 break;
-            case '8':
+            case 8:
                 getOneVehicleProperty(vehicle_info);
                 break;
-            case '9':
+            case 9:
                 getComboVehicleProperty(vehicle_info);
                 break;
-            case '0':
+            case 10:
                 exitProgram(vehicle_info);
                 break;
             default:
                 printf("Felaktigt alternativ\n");
                 break;        
         }
+        printf("\033[033mTryck Enter för att fortsätta... \033[0m");
+        while(getchar() != '\n'); 
     }   
 }

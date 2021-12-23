@@ -16,63 +16,21 @@
 #define TOO_YOUNG 17
 #define TOO_OLD 100
 
-//Lägg till fordon
-void addVehicle();
-
-//Ta bort fordon
-void rmVehicle();
-
-//Sortering efter bilmärke
-void sortVehicleBrand();
-
-//Skriv ut information om ett fordon
-void checkVehicle();
-
-//Skriv ut hela fordonsregistret
-void printVehicleRegister();
-
-//Avsluta
-void exitProgram();
-
-//Sök efter en persons registrerade fordon
-void getAllOfOneOwnersVehicles();
-
-//Sök efter ett specifikt fordons ägare
-void getOwnerOfCertainVehicle();
-
-//Sök efter någon av ett fordons egenskaper
-void getOneVehicleProperty();
-
-//Sök efter kombinationer om ett fordons egenskaper
-void getComboVehicleProperty();
-
-//Ta fram nästa lediga element
-int getFirstFreeIndex();
-
-//Ta fram första tagna element
-int getFirstTakenIndex();
-
-//Ta fram nästa tagna element
-int getSecondTakenIndex();
-
-int checkAge();
-
 //Poster (Structures)
 struct person{
     char name[ARRAY_50];
-    char last_name[ARRAY_50];
     char age[ARRAY_50];
 };
 
 struct person2{
+    int exist;
     char name[ARRAY_50];
-    char last_name[ARRAY_50];
     char age[ARRAY_50];
 };
 
 struct person3{
+    int exist;
     char name[ARRAY_50];
-    char last_name[ARRAY_50];
     char age[ARRAY_50];
 };
 
@@ -85,5 +43,39 @@ typedef struct vehicle{
     struct person2 person2;
     struct person3 person3;
 }vehicle;
+
+//Funktionsdeklarationer
+//Lägg till fordon
+void addVehicle(vehicle vehicle_info[]);
+
+//Ta bort fordon
+void rmVehicle(vehicle vehicle_info[]);
+
+//Sortering efter bilmärke
+void sortVehicleBrand(vehicle vehicle_info[]);
+
+//Skriv ut information om ett fordon
+void checkVehicle(vehicle vehicle_info[]);
+
+//Skriv ut hela fordonsregistret
+void printVehicleRegister(vehicle vehicle_info[]);
+
+//Avsluta
+void exitProgram(vehicle vehicle_info[]);
+
+//Sök efter en persons registrerade fordon
+void getAllOfOneOwnersVehicles(vehicle vehicle_info[]);
+
+//Sök efter ett specifikt fordons ägare
+void getOwnerOfCertainVehicle(vehicle vehicle_info[]);
+
+//Sök efter någon av ett fordons egenskaper
+void getOneVehicleProperty(vehicle vehicle_info[]);
+
+//Sök efter kombinationer om ett fordons egenskaper
+void getComboVehicleProperty(vehicle vehicle_info[]);
+
+//Ta fram nästa lediga element
+int getFirstFreeIndex(vehicle vehicle_info[]);
 
 #endif

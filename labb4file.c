@@ -1,41 +1,56 @@
 #include "labb4file.h"
 
+//Funktionsdeklarationer 
+extern void addVehicle(vehicle vehicle_info[]);
+extern void rmVehicle(vehicle vehicle_info[]);
+extern void sortVehicleBrand(vehicle vehicle_info[]);
+extern void checkVehicle(vehicle vehicle_info[]);
+extern void printVehicleRegister(vehicle vehicle_info[]);
+extern void getAllOfOneOwnersVehicles(vehicle vehicle_info[]);
+extern void getOwnerOfCertainVehicle(vehicle vehicle_info[]);
+extern void getOneVehicleProperty(vehicle vehicle_info[]);
+extern void getComboVehicleProperty(vehicle vehicle_info[]);
+extern void exitProgram(vehicle vehicle_info[]);
+extern int getFirstFreeIndex(vehicle vehicle_info[]);
+extern int safeInputInt();
+
 //Funktionsdefitioner
 void addVehicle(vehicle vehicle_info[]) {
-    char svar;
     int ctrl = 1, ctrl2 = 1, next_owner = OWNER_TWO;
+    long svar;
     int y = getFirstFreeIndex(vehicle_info);
     if (y == ARRAY_10) {
         printf("Fordonsregistret fullt!\n");
     }
     else {
         printf("För- och efternamn på ägaren?\n");
-        scanf("%s %s", vehicle_info[y].person.name, vehicle_info[y].person.last_name);     
+        fgets(vehicle_info[y].person.name, 50, stdin);  
         printf("Ålder på ägare?\n");
-        scanf("%s", vehicle_info[y].person.age);
+        fgets(vehicle_info[y].person.age, 50, stdin);
         //Extrauppgift 1: Lägga till ytterligare ägare
         printf("Lägga till ytterligare ägare?\n1. Ja\n2. Nej \n");
-        scanf(" %c", &svar);
+        svar = safeInputInt();
         while (ctrl) {
             switch (svar) {
-                case '1':
+                case 1:
                     if (next_owner == OWNER_TWO) {
                         printf("För- och efternamn på ägare %d?\n", next_owner + 1);
-                        scanf("%s %s", vehicle_info[y].person2.name, vehicle_info[y].person2.last_name); 
+                        fgets(vehicle_info[y].person2.name, 50, stdin);
                         printf("Ålder på ägare?\n");
-                        scanf("%s", vehicle_info[y].person2.age);
+                        fgets(vehicle_info[y].person2.age, 50, stdin);
+                        vehicle_info[y].person2.exist = 1;
                         printf("Lägga till ytterligare ägare?\n1. Ja\n2. Nej \n");
-                        scanf(" %c", &svar);
-                        if (svar == '1') {
+                        svar = safeInputInt();
+                        if (svar == 1) {
                             next_owner++;
                             break;     
                         }
-                        if (svar == '2') {
+                        if (svar == 2) {
                             printf("Ingen ytterligare ägare tillagd\n");
                             ctrl = 0;
                             break;
                         }
-                        if (svar != '1' || svar != '2') {
+                        if (svar != 1 || svar != 2) {
                             printf("Felaktigt alternativ, ytterligare ägare ej tillagd\n");
                             ctrl = 0;
                             break;
@@ -43,9 +58,10 @@ void addVehicle(vehicle vehicle_info[]) {
                     }
                     if (next_owner == OWNER_THREE) {
                         printf("För- och efternamn på ägare %d?\n", next_owner + 1);
-                        scanf("%s %s", vehicle_info[y].person3.name, vehicle_info[y].person3.last_name); 
+                        fgets(vehicle_info[y].person3.name, 50, stdin);
                         printf("Ålder på ägare?\n");
-                        scanf("%s", vehicle_info[y].person3.age);
+                        fgets(vehicle_info[y].person3.age, 50, stdin);
+                        vehicle_info[y].person3.exist = 1;
                         next_owner++;
                         break;
                     }
@@ -54,7 +70,7 @@ void addVehicle(vehicle vehicle_info[]) {
                         ctrl = 0;
                         break;
                     }
-                case '2':
+                case 2:
                     printf("Ingen ytterligare ägare tillagd\n");
                     ctrl = 0;
                     break;    
@@ -65,33 +81,29 @@ void addVehicle(vehicle vehicle_info[]) {
         }              
         //Extrauppgift slut
         printf("Fordonstyp?\n");
-        scanf("%s", vehicle_info[y].vehicle_type);
+        fgets(vehicle_info[y].vehicle_type, 50, stdin);
         printf("Bilmärke?\n");
-        scanf("%s", vehicle_info[y].vehicle_brand);
+        fgets(vehicle_info[y].vehicle_brand, 50, stdin);
         printf("Registeringsnummer?\n");
-        scanf("%s", vehicle_info[y].number_plate);   
+        fgets(vehicle_info[y].number_plate, 50, stdin);   
         vehicle_info[y].car_found = 1;    
     }        
 }
 
 void rmVehicle(vehicle vehicle_info[]) {
-    int pos;
     char null_str[ARRAY_10] = {0};
-    char term;
+    long pos;
     printf("Ange en position i registret mellan 1-10 som du vill ta bort: ");
-    //Safe input för int-variabel pos
-    if (scanf("%d%c", &pos, &term) != TWO || term != '\n' || pos == FIRST_ELEMENT || pos > ARRAY_10) {
+    pos = safeInputInt();
+    if (pos == FIRST_ELEMENT || pos > ARRAY_10) {
         printf("Felaktigt alternativ\n");
     }
     else {
         if (vehicle_info[pos-1].car_found) {
-            printf("Fordon %d borttaget från registret\n", pos);
+            printf("Fordon %li borttaget från registret\n", pos);
             strcpy(vehicle_info[pos-1].person.name, null_str);
             strcpy(vehicle_info[pos-1].person2.name, null_str);
-            strcpy(vehicle_info[pos-1].person3.name, null_str);
-            strcpy(vehicle_info[pos-1].person.last_name, null_str);  
-            strcpy(vehicle_info[pos-1].person2.last_name, null_str); 
-            strcpy(vehicle_info[pos-1].person3.last_name, null_str);   
+            strcpy(vehicle_info[pos-1].person3.name, null_str);   
             strcpy(vehicle_info[pos-1].person.age, null_str);
             strcpy(vehicle_info[pos-1].person2.age, null_str);
             strcpy(vehicle_info[pos-1].person3.age, null_str);
@@ -99,6 +111,8 @@ void rmVehicle(vehicle vehicle_info[]) {
             strcpy(vehicle_info[pos-1].vehicle_brand, null_str);
             strcpy(vehicle_info[pos-1].number_plate, null_str);
             vehicle_info[pos-1].car_found = 0;
+            vehicle_info[pos-1].person2.exist = 0;
+            vehicle_info[pos-1].person3.exist = 0;
         }
         else {
             printf("Det finns inget fordon registrerat på denna plats\n");    
@@ -109,10 +123,9 @@ void rmVehicle(vehicle vehicle_info[]) {
 void sortVehicleBrand(vehicle vehicle_info[]) {
     int x, y;
     vehicle temp_vehicle_info[ARRAY_10] = {0};
-    int int_temp;
     for (x = 0; x < ARRAY_10; x++) {
         for (y = x + 1; y < ARRAY_10; y++) {
-            if (strcmp(vehicle_info[x].vehicle_brand, vehicle_info[y].vehicle_brand) > 0 && vehicle_info[y].car_found != 0) {
+            if (strncasecmp(vehicle_info[x].vehicle_brand, vehicle_info[y].vehicle_brand, 50) > 0 && vehicle_info[y].car_found != 0) {
                 temp_vehicle_info[x] = vehicle_info[x];
                 vehicle_info[x] = vehicle_info[y];
                 vehicle_info[y] = temp_vehicle_info[x];
@@ -123,29 +136,48 @@ void sortVehicleBrand(vehicle vehicle_info[]) {
 }
 
 void checkVehicle(vehicle vehicle_info[]) {
-    int pos;
-    char term;
+    long pos;
     printf("Ange en position i registret mellan 1-10 som du vill söka efter: ");
-    //Safe input för int-variabel 
-    if (scanf("%d%c", &pos, &term) != 2 || term != '\n' || pos == 0 || pos > ARRAY_10) {
+    pos = safeInputInt();
+    if (pos == 0 || pos > ARRAY_10) {
         printf("Felaktigt alternativ\n");
     }
     else {
         if (vehicle_info[pos-1].car_found) {
             printf("Den angivna positionens registrerade fordon:\n");
-            printf("Ägare: %s %s    %s %s    %s %s\nÅlder: %s    %s    %s\nFordonstyp: %s\nBilmärke: %s\nRegistreringsnummer: %s\n", 
-            vehicle_info[pos-1].person.name, 
-            vehicle_info[pos-1].person.last_name, 
-            vehicle_info[pos-1].person2.name, 
-            vehicle_info[pos-1].person2.last_name,
-            vehicle_info[pos-1].person3.name, 
-            vehicle_info[pos-1].person3.last_name, 
-            vehicle_info[pos-1].person.age, 
-            vehicle_info[pos-1].person2.age, 
-            vehicle_info[pos-1].person3.age,
-            vehicle_info[pos-1].vehicle_type, 
-            vehicle_info[pos-1].vehicle_brand, 
-            vehicle_info[pos-1].number_plate);
+            //Om bara 3 ägare
+            if (vehicle_info[pos-1].person2.exist && vehicle_info[pos-1].person3.exist) {
+                printf("Ägare 1: %sÄgare 2: %sÄgare 3: %sÅlder ägare 1: %sÅlder ägare 2: %sÅlder ägare 3: %sFordonstyp: %sBilmärke: %sRegistreringsnummer: %s", 
+                vehicle_info[pos-1].person.name, 
+                vehicle_info[pos-1].person2.name, 
+                vehicle_info[pos-1].person3.name, 
+                vehicle_info[pos-1].person.age, 
+                vehicle_info[pos-1].person2.age, 
+                vehicle_info[pos-1].person3.age,
+                vehicle_info[pos-1].vehicle_type, 
+                vehicle_info[pos-1].vehicle_brand, 
+                vehicle_info[pos-1].number_plate);
+            }
+            //Om bara 2 ägare
+            if (vehicle_info[pos-1].person2.exist && !vehicle_info[pos-1].person3.exist) {
+                printf("Ägare 1: %sÄgare 2: %sÅlder ägare 1: %sÅlder ägare 2: %sFordonstyp: %sBilmärke: %sRegistreringsnummer: %s", 
+                vehicle_info[pos-1].person.name, 
+                vehicle_info[pos-1].person2.name, 
+                vehicle_info[pos-1].person.age, 
+                vehicle_info[pos-1].person2.age, 
+                vehicle_info[pos-1].vehicle_type, 
+                vehicle_info[pos-1].vehicle_brand, 
+                vehicle_info[pos-1].number_plate);
+            }
+            //Om bara 1 ägare
+            if (!vehicle_info[pos-1].person2.exist && !vehicle_info[pos-1].person3.exist) {
+                printf("Ägare 1: %sÅlder ägare 1: %sFordonstyp: %sBilmärke: %sRegistreringsnummer: %s", 
+                vehicle_info[pos-1].person.name, 
+                vehicle_info[pos-1].person.age, 
+                vehicle_info[pos-1].vehicle_type, 
+                vehicle_info[pos-1].vehicle_brand, 
+                vehicle_info[pos-1].number_plate);
+            }
         }
         else {
             printf("Det finns inget fordon registrerat på denna plats\n");
@@ -158,33 +190,55 @@ void printVehicleRegister(vehicle vehicle_info[]) {
     for (x = 0; x < ARRAY_10; x++) {
         //Om car_found = 1 (true)
         if (vehicle_info[x].car_found) {
-            printf("Fordon %d:\n\tÄgare: %s %s    %s %s    %s %-15s\n\tÅlder: %s    %s    %-5s\n\tFordonstyp: %-10s\n\tBilmärke: %-10s\n\tRegistreringsnummer: %-10s\n", 
-            x + 1, 
-            vehicle_info[x].person.name, 
-            vehicle_info[x].person.last_name, 
-            vehicle_info[x].person2.name, 
-            vehicle_info[x].person2.last_name, 
-            vehicle_info[x].person3.name, 
-            vehicle_info[x].person3.last_name, 
-            vehicle_info[x].person.age,
-            vehicle_info[x].person2.age,
-            vehicle_info[x].person3.age, 
-            vehicle_info[x].vehicle_type, 
-            vehicle_info[x].vehicle_brand, 
-            vehicle_info[x].number_plate);
+            //Om bara 3 ägare
+            if (vehicle_info[x].person2.exist && vehicle_info[x].person3.exist) {
+                printf("Fordon %d:\n\tÄgare 1: %s\tÄgare 2: %s\tÄgare 3: %s\tÅlder ägare 1: %s\tÅlder ägare 2: %s\tÅlder ägare 3: %s\tFordonstyp: %s\tBilmärke: %s\tRegistreringsnummer: %s", 
+                x + 1, 
+                vehicle_info[x].person.name, 
+                vehicle_info[x].person2.name, 
+                vehicle_info[x].person3.name, 
+                vehicle_info[x].person.age,
+                vehicle_info[x].person2.age,
+                vehicle_info[x].person3.age, 
+                vehicle_info[x].vehicle_type, 
+                vehicle_info[x].vehicle_brand, 
+                vehicle_info[x].number_plate);
+            }
+            //Om bara 2 ägare
+            if (vehicle_info[x].person2.exist && !vehicle_info[x].person3.exist) {
+                printf("Fordon %d:\n\tÄgare 1: %s\tÄgare 2: %s\tÅlder ägare 1: %s\tÅlder ägare 2: %s\tFordonstyp: %s\tBilmärke: %s\tRegistreringsnummer: %s", 
+                x + 1, 
+                vehicle_info[x].person.name, 
+                vehicle_info[x].person2.name, 
+                vehicle_info[x].person.age,
+                vehicle_info[x].person2.age,
+                vehicle_info[x].vehicle_type, 
+                vehicle_info[x].vehicle_brand, 
+                vehicle_info[x].number_plate);
+            }
+            //Om bara 1 ägare
+            if (!vehicle_info[x].person2.exist && !vehicle_info[x].person3.exist) {
+                printf("Fordon %d:\n\tÄgare 1: %s\tÅlder ägare 1: %s\tFordonstyp: %s\tBilmärke: %s\tRegistreringsnummer: %s", 
+                x + 1, 
+                vehicle_info[x].person.name, 
+                vehicle_info[x].person.age,
+                vehicle_info[x].vehicle_type, 
+                vehicle_info[x].vehicle_brand, 
+                vehicle_info[x].number_plate);
+            }
         }
     }
 }
 //Extrauppgift 2:
 void getAllOfOneOwnersVehicles(vehicle vehicle_info[]) {
     int x, has_vehicle = 0;
-    char name[ARRAY_50], last_name[ARRAY_50];
+    char name[ARRAY_50];
     printf("För- och efternamn på ägaren?\n");
-    scanf("%s %s", name, last_name);
-    printf("Alla fordon som har %s %s som ägare:\n", name, last_name);
+    fgets(name, 50, stdin);
+    printf("Alla fordon som har %ssom ägare:\n", name);
     for (x = 0; x < ARRAY_10; x++) {
-        if (strcasecmp(name, vehicle_info[x].person.name) == 0 && strcasecmp(last_name, vehicle_info[x].person.last_name) == 0) {
-            printf("Fordon %d:\n\tFordonstyp: %s\n\tBilmärke: %s\n\tRegistreringsnummer: %s\n", 
+        if (strncasecmp(name, vehicle_info[x].person.name, 50) == 0) {
+            printf("Fordon %d:\n\tFordonstyp: %s\tBilmärke: %s\tRegistreringsnummer: %s", 
             x + 1,
             vehicle_info[x].vehicle_type, 
             vehicle_info[x].vehicle_brand, 
@@ -193,8 +247,8 @@ void getAllOfOneOwnersVehicles(vehicle vehicle_info[]) {
         }
     }
     for (x = 0; x < ARRAY_10; x++) {
-        if (strcasecmp(name, vehicle_info[x].person2.name) == 0 && strcasecmp(last_name, vehicle_info[x].person2.last_name) == 0) {
-            printf("Fordon %d:\n\tFordonstyp: %s\n\tBilmärke: %s\n\tRegistreringsnummer: %s\n", 
+        if (strncasecmp(name, vehicle_info[x].person2.name, 50) == 0) {
+            printf("Fordon %d:\n\tFordonstyp: %s\tBilmärke: %s\tRegistreringsnummer: %s", 
             x + 1,
             vehicle_info[x].vehicle_type, 
             vehicle_info[x].vehicle_brand, 
@@ -203,8 +257,8 @@ void getAllOfOneOwnersVehicles(vehicle vehicle_info[]) {
         }
     }
     for (x = 0; x < ARRAY_10; x++) {
-        if (strcasecmp(name, vehicle_info[x].person3.name) == 0 && strcasecmp(last_name, vehicle_info[x].person3.last_name) == 0) {
-            printf("Fordon %d:\n\tFordonstyp: %s\n\tBilmärke: %s\n\tRegistreringsnummer: %s\n", 
+        if (strncasecmp(name, vehicle_info[x].person3.name, 50) == 0) {
+            printf("Fordon %d:\n\tFordonstyp: %s\tBilmärke: %s\tRegistreringsnummer: %s", 
             x + 1,
             vehicle_info[x].vehicle_type, 
             vehicle_info[x].vehicle_brand, 
@@ -221,11 +275,30 @@ void getOwnerOfCertainVehicle(vehicle vehicle_info[]) {
     int x, has_owner = 0;
     char reg_number[ARRAY_50];
     printf("Skriv registreringsnumret till fordonet du vill veta ägare för: ");
-    scanf("%s", reg_number);
+    fgets(reg_number, 50, stdin);
     for (x = 0; x < ARRAY_10; x++) {
-        if (strcasecmp(reg_number, vehicle_info[x].number_plate) == 0) {
-            printf("Ägare:\n\t%s %s    %s %s    %s %s\n", vehicle_info[x].person.name, vehicle_info[x].person.last_name, vehicle_info[x].person2.name, vehicle_info[x].person2.last_name, vehicle_info[x].person3.name, vehicle_info[x].person3.last_name);
-            has_owner = 1;
+        if (strncasecmp(reg_number, vehicle_info[x].number_plate, 50) == 0) {
+            //Om bara 3 ägare
+            if (vehicle_info[x].person2.exist && vehicle_info[x].person3.exist) {
+                printf("Ägare 1: %sÄgare 2: %sÄgare 3: %s", 
+                vehicle_info[x].person.name,  
+                vehicle_info[x].person2.name, 
+                vehicle_info[x].person3.name);
+                has_owner = 1;
+            }
+            //Om bara 2 ägare
+            if (vehicle_info[x].person2.exist && !vehicle_info[x].person3.exist) {
+                printf("Ägare 1: %sÄgare 2: %s", 
+                vehicle_info[x].person.name,  
+                vehicle_info[x].person2.name);
+                has_owner = 1;
+            }
+            //Om bara 1 ägare
+            if (!vehicle_info[x].person2.exist && !vehicle_info[x].person3.exist) {
+                printf("Ägare 1: %s", 
+                vehicle_info[x].person.name);
+                has_owner = 1;
+            }
         }
     }
     if (!has_owner) {
@@ -235,11 +308,12 @@ void getOwnerOfCertainVehicle(vehicle vehicle_info[]) {
 //Extrauppgift 4:
 void getOneVehicleProperty(vehicle vehicle_info[]) {
     int x, vehicle, has_owner = 0;
-    char reg_number[ARRAY_50], property;
+    char reg_number[ARRAY_50];
+    long property;
     printf("Skriv registreringsnumret till fordonet du vill veta en egenskap för: ");
-    scanf("%s", reg_number);
+    fgets(reg_number, 50, stdin);
     for (x = 0; x < ARRAY_10; x++) {
-        if (strcasecmp(reg_number, vehicle_info[x].number_plate) == 0) {
+        if (strncasecmp(reg_number, vehicle_info[x].number_plate, 50) == 0) {
             printf("Fordon hittat! Vilken egenskap vill du veta?\n\t1. Fordonstyp\n\t2. Fordonsmärke\n");
             vehicle = x;
             has_owner = 1;
@@ -250,13 +324,13 @@ void getOneVehicleProperty(vehicle vehicle_info[]) {
     }
     else {
         printf("Skriv ditt alternativ: ");
-        scanf(" %c", &property);
+        property = safeInputInt();
         switch (property) {
-            case '1': 
-                printf("Fordonstyp: %s\n", vehicle_info[vehicle].vehicle_type);
+            case 1: 
+                printf("Fordonstyp: %s", vehicle_info[vehicle].vehicle_type);
                 break;
-            case '2':
-                printf("Fordonstyp: %s\n", vehicle_info[vehicle].vehicle_brand);
+            case 2:
+                printf("Fordonstyp: %s", vehicle_info[vehicle].vehicle_brand);
                 break;
             default:
                 printf("Felaktigt alternativ\n");
@@ -267,11 +341,12 @@ void getOneVehicleProperty(vehicle vehicle_info[]) {
 //Extrauppgift 5:
 void getComboVehicleProperty(vehicle vehicle_info[]) {
     int x, vehicle, has_owner = 0;
-    char reg_number[ARRAY_50], property, answer;
+    char reg_number[ARRAY_50];
+    long property, answer;
     printf("Skriv registreringsnumret till fordonet du vill veta några egenskaper för: ");
-    scanf("%s", reg_number);
+    fgets(reg_number, 50, stdin);
     for (x = 0; x < ARRAY_10; x++) {
-        if (strcasecmp(reg_number, vehicle_info[x].number_plate) == 0) {
+        if (strncasecmp(reg_number, vehicle_info[x].number_plate, 50) == 0) {
             printf("Fordon hittat! Vilka egenskaper vill du veta?\n\t1. Fordonstyp\n\t2. Fordonsmärke\n");
             vehicle = x;
             has_owner = 1;
@@ -282,33 +357,33 @@ void getComboVehicleProperty(vehicle vehicle_info[]) {
     }
     else {
         printf("Skriv ditt alternativ: ");
-        scanf(" %c", &property);
+        property = safeInputInt();
         switch (property) {
-            case '1': 
+            case 1: 
                 printf("Fordonstyp: %s\n", vehicle_info[vehicle].vehicle_type);
                 printf("Vill du även veta bilmärke?\n\t1. Ja\n\t2. Nej\n");
-                scanf(" %c", &answer);
-                if (answer == '1') {
+                answer = safeInputInt();
+                if (answer == 1) {
                     printf("Bilmärke: %s\n", vehicle_info[vehicle].vehicle_brand);    
                 }
-                if (answer == '2') {
+                if (answer == 2) {
                     printf("Skriver inte ut bilmärke\n");
                 }
-                if (answer != '1' && answer != '2') {
+                if (answer != 1 && answer != 2) {
                     printf("Felaktigt alternativ\n");
                 }
                 break;
-            case '2':
+            case 2:
                 printf("Bilmärke: %s\n", vehicle_info[vehicle].vehicle_brand);
                 printf("Vill du även veta fordonstyp?\n\t1. Ja\n\t2. Nej\n");
-                scanf(" %c", &answer);
-                if (answer == '1') {
-                    printf("Fordonstyp: %s\n", vehicle_info[vehicle].vehicle_brand);    
+                answer = safeInputInt();
+                if (answer == 1) {
+                    printf("Fordonstyp: %s\n", vehicle_info[vehicle].vehicle_type);    
                 }
-                if (answer == '2') {
+                if (answer == 2) {
                     printf("Skriver inte ut bilmärke\n");
                 }
-                if (answer != '1' && answer != '2') {
+                if (answer != 1 && answer != 2) {
                     printf("Felaktigt alternativ\n");
                 }
                 break;
@@ -350,33 +425,13 @@ int getFirstFreeIndex(vehicle vehicle_info[]) {
     return y; 
 }
 
-/* OBS Denna kan vara bra att kika på om man vill invertera char till int
-int checkAge(vehicle vehicle_info[], int y, int ctrl3) {
+int safeInputInt() {
     char *end_ptr;
-    char age[ARRAY_50];
+    char str_in[ARRAY_50];
     long number;
-    int base = 10, age_ctrl;
-    if (ctrl3 == 1) {
-        strcpy(age, vehicle_info[y].person.age);
-    }
-    if (ctrl3 == 2) {
-        strcpy(age, vehicle_info[y].person2.age);
-    }
-    if (ctrl3 == 3) {
-        strcpy(age, vehicle_info[y].person3.age);
-    }
-    number = strtol(age, &end_ptr, base);
-    printf("number=%li\n", number);
-    if (*end_ptr) {
-        printf("Error\n");
-    }
-    else {
-        if(number > TOO_YOUNG && number < TOO_OLD) {
-            age_ctrl = 1;
-        }
-        else {
-            age_ctrl = 0;
-        }
-    }
-    return age_ctrl;
-}*/
+    int base = 10;
+    fgets(str_in, 50, stdin);
+    number = strtol(str_in, &end_ptr, base);
+
+    return number;
+}
