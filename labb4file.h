@@ -44,7 +44,6 @@ typedef struct vehicle{
     struct person3 person3;
 }vehicle;
 
-//Funktionsdeklarationer
 //Lägg till fordon
 void addVehicle(vehicle vehicle_info[]);
 

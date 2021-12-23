@@ -1,6 +1,7 @@
 #include "labb4file.h"
 
 //Funktionsdeklarationer 
+extern void writeFile(vehicle vehicle_info[]);
 extern void addVehicle(vehicle vehicle_info[]);
 extern void rmVehicle(vehicle vehicle_info[]);
 extern void sortVehicleBrand(vehicle vehicle_info[]);
@@ -395,14 +396,7 @@ void getComboVehicleProperty(vehicle vehicle_info[]) {
 }
 
 void exitProgram(vehicle vehicle_info[]) {
-    int x;
-    FILE *fp;
-    fp = fopen("fordonsregister.bin", "wb");
-    for (x = 0; x < ARRAY_10; x++) {
-        fwrite(&vehicle_info[x], sizeof(vehicle_info[x]), 1, fp);     
-    }
-    fclose(fp);   
-    exit(0); 
+    writeFile(vehicle_info);
 }
 
 int getFirstFreeIndex(vehicle vehicle_info[]) {
