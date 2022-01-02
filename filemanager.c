@@ -1,27 +1,33 @@
 #include "filemanager.h"
 
-void readFile(vehicle vehicle_info[]) {
-    int x;
+int readFile(vehicle vehicle_info[]) {
+    int x = 0;
     FILE *fp;
     if ((fp = fopen("fordonsregister.bin", "rb")) == NULL) {
-        printf("Filen ''fordonsregister.bin'' kunde inte öppnas. Programmet stängs...\n");
-        exit(0);
+        printf("Fordonsregistret kunde inte hittas. Skapar register...\n");
     }
     else {
-        for (x = 0; x < ARRAY_10; x++) {
-            fread(&vehicle_info[x], sizeof(vehicle_info[x]), 1, fp);
-        }
+        while (fread(&vehicle_info[x], sizeof(vehicle_info[x]), 1, fp)) {
+            x++;
+        }  
     }
     fclose(fp);
+
+    return x;
 }
 
-void writeFile(vehicle vehicle_info[]) {
+void writeFile(vehicle vehicle_info[], int n) {
     int x;
     FILE *fp;
     fp = fopen("fordonsregister.bin", "wb");
-    for (x = 0; x < ARRAY_10; x++) {
+    if (fp == NULL) {
+        printf("Filsystemsfel\n");
+        exit(0);
+    }
+    for (x = 0; x < n; x++) {
         fwrite(&vehicle_info[x], sizeof(vehicle_info[x]), 1, fp);     
     }
-    fclose(fp);   
+    fclose(fp); 
+      
     exit(0); 
 }

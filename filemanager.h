@@ -4,9 +4,9 @@
 
 //Funktionsdeklarationer
 //Läsa från fil
-void readFile(vehicle vehicle_info[]);
+int readFile(vehicle vehicle_info[]);
 
 //Skriva till fil
-void writeFile(vehicle vehicle_info[]);
+void writeFile(vehicle vehicle_info[], int n);
 
 #endif

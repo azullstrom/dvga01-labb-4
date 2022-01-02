@@ -35,7 +35,6 @@ struct person3{
 };
 
 typedef struct vehicle{
-    int car_found;
     char vehicle_type[ARRAY_50];
     char vehicle_brand[ARRAY_50];
     char number_plate[ARRAY_50];
@@ -44,23 +43,25 @@ typedef struct vehicle{
     struct person3 person3;
 }vehicle;
 
+void printMenu();
+
 //Lägg till fordon
-void addVehicle(vehicle vehicle_info[]);
+void addVehicle(vehicle vehicle_info[], int n);
 
 //Ta bort fordon
-void rmVehicle(vehicle vehicle_info[]);
+int rmVehicle(vehicle vehicle_info[], int n);
 
 //Sortering efter bilmärke
-void sortVehicleBrand(vehicle vehicle_info[]);
+void sortVehicleBrand(vehicle vehicle_info[], int n);
 
 //Skriv ut information om ett fordon
-void checkVehicle(vehicle vehicle_info[]);
+void checkVehicle(vehicle vehicle_info[], int n);
 
 //Skriv ut hela fordonsregistret
-void printVehicleRegister(vehicle vehicle_info[]);
+void printVehicleRegister(vehicle vehicle_info[], int n);
 
 //Avsluta
-void exitProgram(vehicle vehicle_info[]);
+void exitProgram(vehicle vehicle_info[], int n);
 
 //Sök efter en persons registrerade fordon
 void getAllOfOneOwnersVehicles(vehicle vehicle_info[]);
